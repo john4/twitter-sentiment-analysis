@@ -98,16 +98,24 @@ def countLikedTweets(pythonObject):
 def optimizeTopic(topic):
     return [" " + topic, topic + " ", " " + topic + " "]
 
+def printRelivantTweets(pythonObject):
+    for item in pythonObject:
+        print (item.get("text"))
+
 
 def main():
     PATH = "./Twitter/tweets/"
     topicOfInterest = "cat"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
+    # Import all tweets from .json within the given folder
     allTweets = importDirOfTweets(PATH)
-    relivantTweets = massageAndFilter(allTweets, topicOfInterest)
 
-    # filteredTweets = filterForTopics(allTweets, topicsOfInterest)
+    # Create a deepcopy of tweets for reference after processing
+    ccAllTweets = copy.deepcopy(allTweets)
+
+    # Manipulate tweets and pull out only relivant ones based on topicOfInterest
+    relivantTweets = massageAndFilter(allTweets, topicOfInterest)
 
     print(str(len(relivantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
     likeTweets = countLikedTweets(allTweets)
