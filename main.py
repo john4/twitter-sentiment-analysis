@@ -49,6 +49,7 @@ def importTweets(PATH):
             tweetsImported-= 1
             continue
     return pythonObject
+
 #---------------------Good Words And Bad Words ------------------
 
 def importWordList(PATH):
