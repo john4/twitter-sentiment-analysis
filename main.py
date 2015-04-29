@@ -55,7 +55,7 @@ def importWordList(PATH):
     results = []
     with open(PATH) as inputfile:
         for line in inputfile:
-            results.append(line().split(','))
+            results.append(line.split(', '))
     return results
 
 
