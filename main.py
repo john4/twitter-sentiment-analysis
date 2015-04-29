@@ -49,6 +49,13 @@ def importTweets(PATH):
             tweetsImported-= 1
             continue
     return pythonObject
+#---------------------Good Words And Bad Words ------------------
+
+def importWordList(PATH):
+    results = []
+    with open(PATH) as inputfile:
+        for line in inputfile:
+            results.append(line().split(','))
 
 
 # -------------------- MASSAGING & FILTERING --------------------
@@ -101,6 +108,7 @@ def optimizeTopic(topic):
 
 def main():
     PATH = "./Twitter/tweets/"
+    PATHDICGOOD = "./Twitter/goodwords.txt"
     topicOfInterest = "cat"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
@@ -112,7 +120,10 @@ def main():
     print(str(len(relivantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
     likeTweets = countLikedTweets(allTweets)
 
+    print(importWordList(PATHDICGOOD).result)
+
     return "finished"
+
 
 print(main())
 
