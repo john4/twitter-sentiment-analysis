@@ -56,6 +56,7 @@ def importWordList(PATH):
     with open(PATH) as inputfile:
         for line in inputfile:
             results.append(line().split(','))
+    return results
 
 
 # -------------------- MASSAGING & FILTERING --------------------
@@ -108,7 +109,7 @@ def optimizeTopic(topic):
 
 def main():
     PATH = "./Twitter/tweets/"
-    PATHDICGOOD = "./Twitter/goodwords.txt"
+    PATHDICGOOD = "./goodwords.txt"
     topicOfInterest = "cat"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
@@ -120,7 +121,7 @@ def main():
     print(str(len(relivantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
     likeTweets = countLikedTweets(allTweets)
 
-    print(importWordList(PATHDICGOOD).result)
+    print(importWordList(PATHDICGOOD))
 
     return "finished"
 
