@@ -5,7 +5,9 @@
 
 import json
 import os
+import re
 
+# -------------------- IMPORTING --------------------
 
 # Returns python object of import tweets, consumes a path to a dir of .json files
 def importDirOfTweets(PATH):
@@ -49,6 +51,34 @@ def importTweets(PATH):
     return pythonObject
 
 
+# -------------------- MASSAGING & FILTERING --------------------
+
+# Prepares tweets for analysis by converting to lower case, removing trivial words, etc.
+def massageAndFilter(pythonObject, topic):
+    arrayifyText(pythonObject)
+    relivantTweets = filterForTopics(pythonObject, topic)
+    return relivantTweets
+
+# Turns all of the text fields on tweets into arrays of strings (words), replacing
+# the single string that is there originally.
+def arrayifyText(pythonObject):
+    for item in pythonObject:
+        s = item.get("text").lower()
+        textArray = ''.join(c for c in s if c not in '!@#$%^&*()-_=+[]{|};:<>,./?1234567890').split()
+        item["text"] = textArray
+
+
+# Return an object of tweets that necessarily contains at least one of the give topics.
+def filterForTopics(pythonObject, topic):
+    relivantTweets = []
+    for item in pythonObject:
+        for word in item.get("text"):
+            if topic == word:
+                relivantTweets.append(item)
+                break
+    return relivantTweets
+
+
 # Returns the number of tweets in the given object that were favorited at least once.
 def countLikedTweets(pythonObject):
     likedTweets = 0
@@ -62,26 +92,6 @@ def countLikedTweets(pythonObject):
     return likedTweets
 
 
-# Return an object of tweets that necessarily contains at least one of the give topics.
-def filterForTopics(pythonObject, topics):
-    reliventTweets = []
-    # for item in pythonObject:
-    #     for topic in topics:
-    #         if topic in item.get("text"):
-    #             reliventTweets.append(item)
-    for item in pythonObject:
-        if "cat" in item.get("text"):
-            reliventTweets.append(item)
-    return reliventTweets
-
-
-# Prepares tweets for analysis by converting to lower case, removing trivial words, etc.
-def massageContent(pythonObject):
-    for item in pythonObject:
-        s = item.get("text").lower()
-
-        item["text"] = item.get("text").lower()
-
 
 # Return a list of strings that are equal to the desired topic string, but with
 # optimized formatting for search. ie: "cat" -> [" cat", "cat ", " cat "]
@@ -92,11 +102,14 @@ def optimizeTopic(topic):
 def main():
     PATH = "./Twitter/tweets/"
     topicOfInterest = "cat"
-    topicsOfInterest = optimizeTopic(topicOfInterest)
+    # topicsOfInterest = optimizeTopic(topicOfInterest)
 
     allTweets = importDirOfTweets(PATH)
-    filteredTweets = filterForTopics(allTweets, topicsOfInterest)
-    print(str(len(filteredTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
+    relivantTweets = massageAndFilter(allTweets, topicOfInterest)
+
+    # filteredTweets = filterForTopics(allTweets, topicsOfInterest)
+
+    print(str(len(relivantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
     likeTweets = countLikedTweets(allTweets)
 
     return "finished"
