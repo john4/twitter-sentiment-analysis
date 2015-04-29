@@ -69,13 +69,13 @@ def massageAndFilter(pythonObject, topic):
     return relivantTweets
 
 # Turns all of the text fields on tweets into arrays of strings (words), replacing
-# the single string that is there originally.
+# the single string that is there originally. Also lowercases everything, and
+# removes symbols/numbers/etc.
 def arrayifyText(pythonObject):
     for item in pythonObject:
         s = item.get("text").lower()
         textArray = ''.join(c for c in s if c not in '!@#$%^&*()-_=+[]{|};:<>,./?1234567890').split()
         item["text"] = textArray
-
 
 # Return an object of tweets that necessarily contains at least one of the give topics.
 def filterForTopics(pythonObject, topic):
@@ -86,6 +86,11 @@ def filterForTopics(pythonObject, topic):
                 relivantTweets.append(item)
                 break
     return relivantTweets
+
+
+# -------------------- ANALYZE --------------------
+
+#  for every good/bad word1 in ever word2 in tweet.text
 
 
 # Returns the number of tweets in the given object that were favorited at least once.
