@@ -110,6 +110,7 @@ def optimizeTopic(topic):
 def main():
     PATH = "./Twitter/tweets/"
     PATHDICGOOD = "./goodwords.txt"
+    PATHDICBAD = "./badwords.txt"
     topicOfInterest = "cat"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
@@ -122,6 +123,7 @@ def main():
     likeTweets = countLikedTweets(allTweets)
 
     print(importWordList(PATHDICGOOD))
+    print(importWordList(PATHDICBAD))
 
     return "finished"
 
