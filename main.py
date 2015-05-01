@@ -50,8 +50,9 @@ def importTweets(PATH):
             continue
     return pythonObject
 
-#---------------------Good Words And Bad Words ------------------
-
+# Imports a list of words from path to a .txt file.
+# File should contain words to be imported, exlusively. One word per line.
+# TODO: Get this to further orangize lists into dictionaries for faster lookup
 def importWordList(PATH):
     results = []
     with open(PATH) as inputfile:
@@ -63,6 +64,8 @@ def importWordList(PATH):
 # -------------------- MASSAGING & FILTERING --------------------
 
 # Prepares tweets for analysis by converting to lower case, removing trivial words, etc.
+# TODO: Have this convert a topic into intelligent possible extension of the topic word,
+#  and perhaps prompt the user before including. For example, "cat" -> "cats"
 def massageAndFilter(pythonObject, topic):
     arrayifyText(pythonObject)
     relivantTweets = filterForTopics(pythonObject, topic)
@@ -129,6 +132,42 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
 
     overallTopicSentiment = (numGoodWords - numBadWords) / (numGoodWords + numBadWords)
 
+# Generates a fancy .txt report of the results of this analysis.
+def generateReport(allTweets, relivantTweets, topic):
+    REPORTNAME = "results.txt"
+    lenAllTweets = len(allTweets)
+    lenRelivantTweets = len(relivantTweets)
+
+    relivantTweets.sort(key = lambda x: x.get("sentimentScore"), reverse = True)
+    topFive = copy.deepcopy(relivantTweets[0:5])
+
+    relivantTweets.sort(key = lambda x: x.get("sentimentScore"))
+    bottomFive = copy.deepcopy(relivantTweets[0:5])
+
+
+    f = open(REPORTNAME, "w")
+    f.write("Topic of interest:                " + topic + "\n")
+    f.write("Number of tweets imported:        " + str(lenAllTweets) + "\n")
+    f.write("Number of tweets relivant:        " + str(lenRelivantTweets) + "\n")
+    f.write("Percentage of tweets relivant:    " + str((numGoodWords + numBadWords) / lenRelivantTweets * 100) + "%" + "\n")
+    f.write("Total words analyzed:             " + str(numWords) + "\n")
+    f.write("\n")
+    f.write("Overall sentiment score*:         " + str(overallTopicSentiment) + "\n\n")
+    f.write("*: Sentiment scores are a rating from -1 to 1, where -1 is quite bad, 1 is quite good, and 0 is quite neutral." + "\n")
+    f.write("\n\n")
+    f.write("Top five most positive tweets: \n")
+    for idx, tweet in enumerate(topFive):
+        f.write(tweet.get("user").get("screen_name") + "    sentiment: " + str(tweet.get("sentimentScore")) + "\n")
+        f.write(tweet.get("text") + "\n--------------------\n")
+    f.write("\n\n")
+    f.write("Bottom five most negative tweets: \n")
+    for idx, tweet in enumerate(bottomFive):
+        f.write(tweet.get("user").get("screen_name") + "    sentiment: " + str(tweet.get("sentimentScore")) + "\n")
+        f.write(tweet.get("text") + "\n--------------------\n")
+
+    f.close()
+
+    return REPORTNAME
 
 # Returns the number of tweets in the given object that were favorited at least once.
 def countLikedTweets(pythonObject):
@@ -189,6 +228,8 @@ def main():
     analyzeGoodnessAndBadness(relivantTweets, goodWords, badWords)
     print("Analyzed " + str(numWords) + " words, finding " + str(numGoodWords) + " to be good, and " + str(numBadWords) + " to be bad.")
     print("Making for an overall sentiment score of " + str(overallTopicSentiment))
+
+    print("Writing you a nifty report. . .  " + generateReport(allTweets, relivantTweets, topicOfInterest))
 
     return 0
 
