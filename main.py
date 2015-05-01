@@ -56,7 +56,7 @@ def importWordList(PATH):
     results = []
     with open(PATH) as inputfile:
         for line in inputfile:
-            results.append(line.strip('\n').split(', '))
+            results.append(line.strip('\n'))
     return results
 
 
@@ -149,8 +149,8 @@ def printRelivantTweets(pythonObject):
 
 def main():
     PATH = "./Twitter/tweets/"
-    PATHDICGOOD = "./goodwords.txt"
-    PATHDICBAD = "./badwords.txt"
+    PATHDICGOOD = "./good-words.txt"
+    PATHDICBAD = "./bad-words.txt"
     topicOfInterest = "cat"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
@@ -179,9 +179,9 @@ def main():
     # print(importWordList(PATHDICGOOD))
     # print(importWordList(PATHDICBAD))
 
+    return 0
 
-print(main())
-
+main()
 
 # axiom: tweetSet is a set of tweets that certainly pertain to a topic X
 #
