@@ -75,13 +75,13 @@ def arrayifyText(pythonObject):
     for item in pythonObject:
         s = item.get("text").lower()
         textArray = ''.join(c for c in s if c not in '!@#$%^&*()-_=+[]{|};:<>,./?1234567890').split()
-        item["text"] = textArray
+        item["arrayText"] = textArray
 
 # Return an object of tweets that necessarily contains at least one of the give topics.
 def filterForTopics(pythonObject, topic):
     relivantTweets = []
     for item in pythonObject:
-        for word in item.get("text"):
+        for word in item.get("arrayText"):
             if topic == word:
                 relivantTweets.append(item)
                 break
@@ -104,7 +104,7 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
     for item in pythonObject:
         scoreOfThisTweet = 0
 
-        for questionableWord in item.get("text"):
+        for questionableWord in item.get("arrayText"):
             numWords += 1
 
             for goodWord in goodWords:
@@ -164,9 +164,6 @@ def main():
 
     print("Importing badword dictionary at " + PATHDICBAD + " . . .")
     badWords = importWordList(PATHDICBAD)
-
-    # Create a deepcopy of tweets for reference after processing
-    ccAllTweets = copy.deepcopy(allTweets)
 
     # Manipulate tweets and pull out only relivant ones based on topicOfInterest
     print("Sniffing out tweets about " + topicOfInterest + " . . .")
