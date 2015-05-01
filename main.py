@@ -155,12 +155,12 @@ def generateReport(allTweets, relivantTweets, topic):
     f.write("Overall sentiment score*:         " + str(overallTopicSentiment) + "\n\n")
     f.write("*: Sentiment scores are a rating from -1 to 1, where -1 is quite bad, 1 is quite good, and 0 is quite neutral." + "\n")
     f.write("\n\n")
-    f.write("Top five most positive tweets: \n")
+    f.write("Top five most positive tweets: \n\n")
     for idx, tweet in enumerate(topFive):
         f.write(tweet.get("user").get("screen_name") + "    sentiment: " + str(tweet.get("sentimentScore")) + "\n")
         f.write(tweet.get("text") + "\n--------------------\n")
     f.write("\n\n")
-    f.write("Bottom five most negative tweets: \n")
+    f.write("Bottom five most negative tweets: \n\n")
     for idx, tweet in enumerate(bottomFive):
         f.write(tweet.get("user").get("screen_name") + "    sentiment: " + str(tweet.get("sentimentScore")) + "\n")
         f.write(tweet.get("text") + "\n--------------------\n")
