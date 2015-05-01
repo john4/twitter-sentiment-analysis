@@ -98,6 +98,8 @@ numBadWords = 0
 scoreOfBestTweet = 0
 scoreOfWorstTweet = 0
 
+# Analyzes all given tweets for sentiment, assigning a sentimentScore to each tweet.
+# This function updates the global variables above.
 def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
     global overallTopicSentiment, numWords, numGoodWords, numBadWords, scoreOfBestTweet, scoreOfWorstTweet
 
@@ -117,6 +119,8 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
                 if questionableWord == badWord:
                     numBadWords += 1
                     scoreOfThisTweet += -1
+
+        item["sentimentScore"] = scoreOfThisTweet
 
         if scoreOfThisTweet > scoreOfBestTweet:
             scoreOfBestTweet = scoreOfThisTweet
