@@ -99,10 +99,11 @@ scoreOfBestTweet = 0
 scoreOfWorstTweet = 0
 
 def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
-    global numWords, numGoodWords, numBadWords, scoreOfBestTweet, scoreOfWorstTweet
+    global overallTopicSentiment, numWords, numGoodWords, numBadWords, scoreOfBestTweet, scoreOfWorstTweet
 
     for item in pythonObject:
         scoreOfThisTweet = 0
+        print(item.get("arrayText"))
 
         for questionableWord in item.get("arrayText"):
             numWords += 1
@@ -121,6 +122,8 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
             scoreOfBestTweet = scoreOfThisTweet
         if scoreOfThisTweet < scoreOfWorstTweet:
             scoreOfWorstTweet = scoreOfThisTweet
+
+    overallTopicSentiment = (numGoodWords - numBadWords) / (numGoodWords + numBadWords)
 
 
 # Returns the number of tweets in the given object that were favorited at least once.
@@ -151,8 +154,14 @@ def main():
     PATH = "./Twitter/tweets/"
     PATHDICGOOD = "./good-words.txt"
     PATHDICBAD = "./bad-words.txt"
-    topicOfInterest = "cat"
+    topicOfInterest = "halo"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
+
+    inputTopicOfInterest = input("Hi there! What single-word topic would you like to analyze for? ")
+    if " " in inputTopicOfInterest:
+        print("Hmm... seems you've entered something invalid. Using default topic instead.")
+    else:
+        topicOfInterest = inputTopicOfInterest
 
     # Import all tweets from .json within the given folder
     print("Importing tweets within " + PATH + " . . .")
@@ -175,9 +184,7 @@ def main():
     print("Analyzing all relivant tweets for sentiment . . .")
     analyzeGoodnessAndBadness(relivantTweets, goodWords, badWords)
     print("Analyzed " + str(numWords) + " words, finding " + str(numGoodWords) + " to be good, and " + str(numBadWords) + " to be bad.")
-
-    # print(importWordList(PATHDICGOOD))
-    # print(importWordList(PATHDICBAD))
+    print("Making for an overall sentiment score of " + str(overallTopicSentiment))
 
     return 0
 
