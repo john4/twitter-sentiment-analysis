@@ -9,6 +9,6 @@ A rudimentary piece of Python that derives interesting data from tweets.
 - ~~actually get score for topic~~
 - ~~top (5) positive & bottom (5) negative tweets~~
 - ~~some kind of results report generated~~
-- optional: figure out hashtag situation
+- ~~optional: figure out hashtag situation~~
 - optional: add new words to dictionaries
 - ~~for friday: intensifiers~~
