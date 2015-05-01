@@ -68,8 +68,8 @@ def importWordList(PATH):
 #  and perhaps prompt the user before including. For example, "cat" -> "cats"
 def massageAndFilter(pythonObject, topic):
     arrayifyText(pythonObject)
-    relivantTweets = filterForTopics(pythonObject, topic)
-    return relivantTweets
+    relevantTweets = filterForTopics(pythonObject, topic)
+    return relevantTweets
 
 # Turns all of the text fields on tweets into arrays of strings (words), replacing
 # the single string that is there originally. Also lowercases everything, and
@@ -82,13 +82,13 @@ def arrayifyText(pythonObject):
 
 # Return an object of tweets that necessarily contains at least one of the give topics.
 def filterForTopics(pythonObject, topic):
-    relivantTweets = []
+    relevantTweets = []
     for item in pythonObject:
         for word in item.get("arrayText"):
             if topic == word:
-                relivantTweets.append(item)
+                relevantTweets.append(item)
                 break
-    return relivantTweets
+    return relevantTweets
 
 
 # -------------------- ANALYZE --------------------
@@ -133,23 +133,23 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
     overallTopicSentiment = (numGoodWords - numBadWords) / (numGoodWords + numBadWords)
 
 # Generates a fancy .txt report of the results of this analysis.
-def generateReport(allTweets, relivantTweets, topic):
+def generateReport(allTweets, relevantTweets, topic):
     REPORTNAME = "results.txt"
     lenAllTweets = len(allTweets)
-    lenRelivantTweets = len(relivantTweets)
+    lenRelevantTweets = len(relevantTweets)
 
-    relivantTweets.sort(key = lambda x: x.get("sentimentScore"), reverse = True)
-    topFive = copy.deepcopy(relivantTweets[0:5])
+    relevantTweets.sort(key = lambda x: x.get("sentimentScore"), reverse = True)
+    topFive = copy.deepcopy(relevantTweets[0:5])
 
-    relivantTweets.sort(key = lambda x: x.get("sentimentScore"))
-    bottomFive = copy.deepcopy(relivantTweets[0:5])
+    relevantTweets.sort(key = lambda x: x.get("sentimentScore"))
+    bottomFive = copy.deepcopy(relevantTweets[0:5])
 
 
     f = open(REPORTNAME, "w")
     f.write("Topic of interest:                " + topic + "\n")
     f.write("Number of tweets imported:        " + str(lenAllTweets) + "\n")
-    f.write("Number of tweets relivant:        " + str(lenRelivantTweets) + "\n")
-    f.write("Percentage of tweets relivant:    " + str((numGoodWords + numBadWords) / lenRelivantTweets * 100) + "%" + "\n")
+    f.write("Number of tweets relevant:        " + str(lenRelevantTweets) + "\n")
+    f.write("Percentage of tweets relevant:    " + str((numGoodWords + numBadWords) / lenRelevantTweets * 100) + "%" + "\n")
     f.write("Total words analyzed:             " + str(numWords) + "\n")
     f.write("\n")
     f.write("Overall sentiment score*:         " + str(overallTopicSentiment) + "\n\n")
@@ -188,7 +188,7 @@ def countLikedTweets(pythonObject):
 def optimizeTopic(topic):
     return [" " + topic, topic + " ", " " + topic + " "]
 
-def printRelivantTweets(pythonObject):
+def printRelevantTweets(pythonObject):
     for item in pythonObject:
         print (item.get("text"))
 
@@ -217,19 +217,19 @@ def main():
     print("Importing badword dictionary at " + PATHDICBAD + " . . .")
     badWords = importWordList(PATHDICBAD)
 
-    # Manipulate tweets and pull out only relivant ones based on topicOfInterest
+    # Manipulate tweets and pull out only relevant ones based on topicOfInterest
     print("Sniffing out tweets about " + topicOfInterest + " . . .")
-    relivantTweets = massageAndFilter(allTweets, topicOfInterest)
-    print(str(len(relivantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
+    relevantTweets = massageAndFilter(allTweets, topicOfInterest)
+    print(str(len(relevantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
 
 
     # Analyze
-    print("Analyzing all relivant tweets for sentiment . . .")
-    analyzeGoodnessAndBadness(relivantTweets, goodWords, badWords)
+    print("Analyzing all relevant tweets for sentiment . . .")
+    analyzeGoodnessAndBadness(relevantTweets, goodWords, badWords)
     print("Analyzed " + str(numWords) + " words, finding " + str(numGoodWords) + " to be good, and " + str(numBadWords) + " to be bad.")
     print("Making for an overall sentiment score of " + str(overallTopicSentiment))
 
-    print("Writing you a nifty report. . .  " + generateReport(allTweets, relivantTweets, topicOfInterest))
+    print("Writing you a nifty report. . .  " + generateReport(allTweets, relevantTweets, topicOfInterest))
 
     return 0
 
