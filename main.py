@@ -103,25 +103,35 @@ scoreOfWorstTweet = 0
 
 # Analyzes all given tweets for sentiment, assigning a sentimentScore to each tweet.
 # This function updates the global variables above.
-def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
+def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
     global overallTopicSentiment, numWords, numGoodWords, numBadWords, scoreOfBestTweet, scoreOfWorstTweet
 
     for item in pythonObject:
         scoreOfThisTweet = 0
-        print(item.get("arrayText"))
+        multiplier = 1
 
         for questionableWord in item.get("arrayText"):
             numWords += 1
 
+            for intensWord in intensifiers:
+                if questionableWord == intensWord:
+                    multiplier += 1
+                    continue
+
             for goodWord in goodWords:
                 if questionableWord == goodWord:
-                    numGoodWords += 1
-                    scoreOfThisTweet += 1
+                    numGoodWords += 1 * multiplier
+                    scoreOfThisTweet += 1 * multiplier
+                    multiplier == 1
+                    continue
 
             for badWord in badWords:
                 if questionableWord == badWord:
-                    numBadWords += 1
-                    scoreOfThisTweet += -1
+                    numBadWords += 1 * multiplier
+                    scoreOfThisTweet += -1 * multiplier
+                    multiplier == 1
+                    continue
+            multiplier == 1
 
         item["sentimentScore"] = scoreOfThisTweet
 
@@ -197,6 +207,7 @@ def main():
     PATH = "./Twitter/tweets/"
     PATHDICGOOD = "./good-words.txt"
     PATHDICBAD = "./bad-words.txt"
+    PATHDICINT = "./intensifiers.txt"
     topicOfInterest = "halo"
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
@@ -217,6 +228,9 @@ def main():
     print("Importing badword dictionary at " + PATHDICBAD + " . . .")
     badWords = importWordList(PATHDICBAD)
 
+    print("Importing intensifiers dictionary at " + PATHDICINT + " . . .")
+    intensifiers = importWordList(PATHDICINT)
+
     # Manipulate tweets and pull out only relevant ones based on topicOfInterest
     print("Sniffing out tweets about " + topicOfInterest + " . . .")
     relevantTweets = massageAndFilter(allTweets, topicOfInterest)
@@ -224,8 +238,8 @@ def main():
 
 
     # Analyze
-    print("Analyzing all relevant tweets for sentiment . . .")
-    analyzeGoodnessAndBadness(relevantTweets, goodWords, badWords)
+    print("Analyzing all relivant tweets for sentiment . . .")
+    analyzeGoodnessAndBadness(relivantTweets, goodWords, badWords, intensifiers)
     print("Analyzed " + str(numWords) + " words, finding " + str(numGoodWords) + " to be good, and " + str(numBadWords) + " to be bad.")
     print("Making for an overall sentiment score of " + str(overallTopicSentiment))
 
