@@ -1,6 +1,14 @@
 # twitter-sentiment-analysis
 A rudimentary piece of Python that derives interesting data from tweets.
 
+# running
+- Notice the shebang at the top of the `main.py` script. Be sure this points to your local version of python 3.x.
+- Executing is as easy as `./main.py` in your terminal.
+- Be sure to check the paths in `main.py`. You'll need to supply some json tweets. If you're our professor, we provided them to you. Else, go find some.
+- Enjoy, and check the directory for `results.txt`.
+
+Be wary of excessively large datasets...
+
 
 # tasks remaining:
 - ~~put together lists of good word, bad words~~
