@@ -149,7 +149,7 @@ def generateReport(allTweets, relevantTweets, topic):
     f.write("Topic of interest:                " + topic + "\n")
     f.write("Number of tweets imported:        " + str(lenAllTweets) + "\n")
     f.write("Number of tweets relevant:        " + str(lenRelevantTweets) + "\n")
-    f.write("Percentage of tweets relevant:    " + str((numGoodWords + numBadWords) / lenRelevantTweets * 100) + "%" + "\n")
+    f.write("Percentage of tweets relevant:    " + str(lenRelevantTweets / lenAllTweets * 100) + "%" + "\n")
     f.write("Total words analyzed:             " + str(numWords) + "\n")
     f.write("\n")
     f.write("Overall sentiment score*:         " + str(overallTopicSentiment) + "\n\n")
