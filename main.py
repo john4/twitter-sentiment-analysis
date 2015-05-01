@@ -117,6 +117,7 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
             for intensWord in intensifiers:
                 if questionableWord == intensWord:
                     multiplier += 1
+                    continue
                     
 
             for goodWord in goodWords:
@@ -124,6 +125,7 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
                     numGoodWords += 1 * multiplier
                     scoreOfThisTweet += 1 * multiplier
                     multiplier == 1
+                    continue
             
 
             for badWord in badWords:
@@ -131,6 +133,8 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
                     numBadWords += 1 * multiplier
                     scoreOfThisTweet += -1 * multiplier
                     multiplier == 1
+                    continue
+            multiplier == 1
 
         item["sentimentScore"] = scoreOfThisTweet
 
