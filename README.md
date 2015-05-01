@@ -11,4 +11,4 @@ A rudimentary piece of Python that derives interesting data from tweets.
 - ~~some kind of results report generated~~
 - optional: figure out hashtag situation
 - optional: add new words to dictionaries
-- for friday: intensifiers
+- ~~for friday: intensifiers~~
