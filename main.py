@@ -105,11 +105,10 @@ scoreOfWorstTweet = 0
 # This function updates the global variables above.
 def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
     global overallTopicSentiment, numWords, numGoodWords, numBadWords, scoreOfBestTweet, scoreOfWorstTweet
-    
+
     for item in pythonObject:
         scoreOfThisTweet = 0
         multiplier = 1
-        print(item.get("arrayText"))
 
         for questionableWord in item.get("arrayText"):
             numWords += 1
@@ -118,7 +117,6 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
                 if questionableWord == intensWord:
                     multiplier += 1
                     continue
-                    
 
             for goodWord in goodWords:
                 if questionableWord == goodWord:
@@ -126,7 +124,6 @@ def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords, intensifiers):
                     scoreOfThisTweet += 1 * multiplier
                     multiplier == 1
                     continue
-            
 
             for badWord in badWords:
                 if questionableWord == badWord:
