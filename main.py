@@ -91,6 +91,36 @@ def filterForTopics(pythonObject, topic):
 # -------------------- ANALYZE --------------------
 
 #  for every good/bad word1 in ever word2 in tweet.text
+overallTopicSentiment = 0
+numWords = 0
+numGoodWords = 0
+numBadWords = 0
+scoreOfBestTweet = 0
+scoreOfWorstTweet = 0
+
+def analyzeGoodnessAndBadness(pythonObject, goodWords, badWords):
+    global numWords, numGoodWords, numBadWords, scoreOfBestTweet, scoreOfWorstTweet
+
+    for item in pythonObject:
+        scoreOfThisTweet = 0
+
+        for questionableWord in item.get("text"):
+            numWords += 1
+
+            for goodWord in goodWords:
+                if questionableWord == goodWord:
+                    numGoodWords += 1
+                    scoreOfThisTweet += 1
+
+            for badWord in badWords:
+                if questionableWord == badWord:
+                    numBadWords += 1
+                    scoreOfThisTweet += -1
+
+        if scoreOfThisTweet > scoreOfBestTweet:
+            scoreOfBestTweet = scoreOfThisTweet
+        if scoreOfThisTweet < scoreOfWorstTweet:
+            scoreOfWorstTweet = scoreOfThisTweet
 
 
 # Returns the number of tweets in the given object that were favorited at least once.
@@ -125,21 +155,32 @@ def main():
     # topicsOfInterest = optimizeTopic(topicOfInterest)
 
     # Import all tweets from .json within the given folder
+    print("Importing tweets within " + PATH + " . . .")
     allTweets = importDirOfTweets(PATH)
+
+    # Import word dictionaries
+    print("Importing goodword dictionary at " + PATHDICGOOD + " . . .")
+    goodWords = importWordList(PATHDICGOOD)
+
+    print("Importing badword dictionary at " + PATHDICBAD + " . . .")
+    badWords = importWordList(PATHDICBAD)
 
     # Create a deepcopy of tweets for reference after processing
     ccAllTweets = copy.deepcopy(allTweets)
 
     # Manipulate tweets and pull out only relivant ones based on topicOfInterest
+    print("Sniffing out tweets about " + topicOfInterest + " . . .")
     relivantTweets = massageAndFilter(allTweets, topicOfInterest)
-
     print(str(len(relivantTweets)) + " of " + str(len(allTweets)) + " are relivent to the topic: " + topicOfInterest)
-    likeTweets = countLikedTweets(allTweets)
 
-    print(importWordList(PATHDICGOOD))
-    print(importWordList(PATHDICBAD))
 
-    return "finished"
+    # Analyze
+    print("Analyzing all relivant tweets for sentiment . . .")
+    analyzeGoodnessAndBadness(relivantTweets, goodWords, badWords)
+    print("Analyzed " + str(numWords) + " words, finding " + str(numGoodWords) + " to be good, and " + str(numBadWords) + " to be bad.")
+
+    # print(importWordList(PATHDICGOOD))
+    # print(importWordList(PATHDICBAD))
 
 
 print(main())
