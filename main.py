@@ -238,8 +238,8 @@ def main():
 
 
     # Analyze
-    print("Analyzing all relivant tweets for sentiment . . .")
-    analyzeGoodnessAndBadness(relivantTweets, goodWords, badWords, intensifiers)
+    print("Analyzing all relevant tweets for sentiment . . .")
+    analyzeGoodnessAndBadness(relevantTweets, goodWords, badWords, intensifiers)
     print("Analyzed " + str(numWords) + " words, finding " + str(numGoodWords) + " to be good, and " + str(numBadWords) + " to be bad.")
     print("Making for an overall sentiment score of " + str(overallTopicSentiment))
 
